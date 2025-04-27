@@ -1,0 +1,9 @@
+# Supabase/Project ignores
+.env
+.supabase
+node_modules
+.DS_Store
+/dist
+/build
+*.local
+*.log
