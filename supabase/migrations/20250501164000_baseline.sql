@@ -1,0 +1,7 @@
+-- Baseline migration for neothink Supabase project
+-- Generated 2025-05-01
+-- All objects created with IF NOT EXISTS or OR REPLACE for idempotency
+-- This file is the canonical starting point for all future migrations
+--
+-- This migration is intentionally empty as the current remote schema is the baseline.
+-- All future migrations must be created on top of this baseline.
