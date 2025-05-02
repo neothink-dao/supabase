@@ -39,6 +39,42 @@ This repository contains the **declarative, version-controlled Supabase database
 - Follows Supabase and open-source best practices for structure, security, and maintainability.
 - MCP/CI/CD ready for automated deployments and edge function management.
 
+## Supabase Schema Drift Detection (CI/CD)
+
+This repo includes a GitHub Actions workflow (`.github/workflows/supabase-schema-drift.yml`) that automatically checks for schema drift between the repo and the live Supabase database on every PR and push to `main`.
+
+- **How it works:**
+  - On every push or PR, the workflow runs `supabase db diff --linked` against your live project.
+  - If there are any uncommitted schema changes, the workflow will fail, preventing drift.
+  - Secrets required: `SUPABASE_DB_PASSWORD`, `SUPABASE_PROJECT_REF` (add these in your repo settings).
+
+## Policy & Security Model
+
+- **Row Level Security (RLS):** Enabled on all tables by default for maximum security.
+- **Default Policies:** All tables have a default-deny policy and a permissive `service_role` policy.
+- **User Policies:** For tables with a `user_id` column, authenticated users can only access their own rows (SELECT, INSERT, UPDATE, DELETE).
+- **Admin Policies:** Service/admin roles retain full access for management and support. (Add more granular admin policies as needed.)
+
+## Edge Functions & Automation
+
+- All Edge Functions use Deno 2.1+, are modular, and leverage environment variables for secrets.
+- Use Edge Functions for automation, notifications, and delightful user experiences.
+
+## Realtime & Event-Driven UX
+
+- Realtime is enabled for collaborative and notification-driven tables (e.g., chat, notifications).
+- Use Realtime Broadcast for ephemeral UI updates.
+
+## Accessibility & Performance
+
+- All APIs and UIs are designed for accessibility (ARIA, keyboard, mobile-friendly).
+- Indexes are added for all columns used in policies and frequent queries.
+
+## Onboarding & Documentation
+
+- All migrations are timestamped, modular, and idempotent where possible.
+- This README, migration comments, and code comments document all custom business logic, policies, and workflows.
+
 ## Getting Started
 See [docs/](docs/) for full documentation and onboarding instructions.
 
@@ -57,6 +93,12 @@ See [docs/](docs/) for full documentation and onboarding instructions.
 - `CONTRIBUTING.md` — Contribution guidelines
 
 ---
+
+## Next Steps
+
+- Review and customize policies for your business logic and roles.
+- Add more granular admin and public access policies as needed.
+- Expand Edge Functions and Realtime features for even more delightful automation and engagement.
 
 ## License
 MIT

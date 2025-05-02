@@ -1,0 +1,28 @@
+# GitHub Actions workflow: Supabase Schema Drift Detection
+# Purpose: Prevent schema drift between repo and live Supabase DB on every PR and push
+name: Supabase Schema Drift Detection
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  schema-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: Install Supabase CLI
+        run: npm install -g supabase
+      - name: Supabase DB Diff
+        env:
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          supabase link --project-ref "$SUPABASE_PROJECT_REF"
+          supabase db diff --linked --password "$SUPABASE_DB_PASSWORD"
